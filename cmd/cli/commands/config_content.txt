@@ -1,0 +1,10 @@
+Usage: nix-deploy config [OPTIONS] COMMAND
+
+Manage global configuration.
+
+Commands:
+  list                    List all set configuration variables
+  set [VARIABLE] [VALUE]  Update a given configuration variable
+  path                    Print global configuration filepath
+
+(c) Beau Jean van Bemmel, 2025
