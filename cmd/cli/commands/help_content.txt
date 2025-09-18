@@ -6,18 +6,10 @@ Commands:
   help                    Show all available commands and options
   config                  Manage global nix-deploy configuration
   auth                    Manage authentication keys
-  fetch                   Check for new configuration versions
-  deploy                  Deploy new configuration versions
+  fetch                   Check for new configuration
+  deploy                  Deploy new configuration
+  version                 Print version information
 
-Global Options:
-  -v, --verbose           Execute command with additional verbosity
-  -s, --source string     Overwrite source for following command
-  -a, --auth string       Overwrite authentication for following command
-  -f, --flake string      Overwrite flake path for following command
-  -d, --dry-run           Execute a command without applying changes
-  -h, --help              Show all available (sub)commands and options for a given command
-      --version           Print version information
-
-Run `nix-deploy help COMMAND` or `nix-deploy COMMAND --help` for more information on a command.
+Run `nix-deploy help COMMAND` for more information on a command.
 
 (c) Beau Jean van Bemmel, 2025
