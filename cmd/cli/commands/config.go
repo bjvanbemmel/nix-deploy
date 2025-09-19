@@ -38,6 +38,8 @@ func (c *Config) Execute(args ...string) error {
 		return c.Set(args[1], args[2])
 	case "path":
 		fmt.Println(c.Configuration.Path())
+	default:
+		Help{}.Execute("config")
 	}
 
 	return nil
