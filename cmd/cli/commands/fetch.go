@@ -34,7 +34,8 @@ func (f Fetch) Execute(args ...string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("New configuration pulled with hash `%s`!", rev)
+
+	fmt.Printf("New configuration pulled with hash `%s`!\n", rev)
 
 	return nil
 }
