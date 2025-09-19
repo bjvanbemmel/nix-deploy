@@ -27,11 +27,6 @@ func New(config config.Configuration) GitIntegration {
 }
 
 func (g *GitIntegration) Pull() error {
-	oldHash, err := g.LatestHash()
-	if err != nil {
-		return err
-	}
-
 	cmd := exec.Command("git", "pull")
 	cmd.Dir = g.Config.AbsoluteFlake()
 
@@ -45,7 +40,7 @@ func (g *GitIntegration) Pull() error {
 		return err
 	}
 
-	if oldHash == rev {
+	if g.Config.Hash == rev {
 		return ErrAlreadyUpToDate
 	}
 
