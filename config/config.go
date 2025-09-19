@@ -8,19 +8,26 @@ import (
 )
 
 const (
-	DEFAULT_SOURCE             string = "https://github.com/bjvanbemmel/nix-config"
+	DEFAULT_SOURCE             string = "git@github.com:bjvanbemmel/nix-config"
+	DEFAULT_BRANCH             string = "main"
+	DEFAULT_REMOTE             string = "origin"
 	DEFAULT_FLAKE              string = "~/.config/nix"
 	GLOBAL_CONFIG_DEFAULT_PATH string = "~/.config/nix-deploy/config"
 )
 
 type Configuration struct {
 	Source string `json:"source"`
+	Branch string `json:"branch"`
+	Remote string `json:"remote"`
 	Flake  string `json:"flake"`
+	Hash   string `json:"hash"`
 }
 
 func New() Configuration {
 	return Configuration{
 		Source: DEFAULT_SOURCE,
+		Branch: DEFAULT_BRANCH,
+		Remote: DEFAULT_REMOTE,
 		Flake:  DEFAULT_FLAKE,
 	}
 }
@@ -62,6 +69,18 @@ func (c Configuration) Save() error {
 }
 
 func (c Configuration) Path() string {
+	return c.toAbsolute(GLOBAL_CONFIG_DEFAULT_PATH)
+}
+
+func (c Configuration) AbsoluteSource() string {
+	return c.toAbsolute(c.Source)
+}
+
+func (c Configuration) AbsoluteFlake() string {
+	return c.toAbsolute(c.Flake)
+}
+
+func (c Configuration) toAbsolute(path string) string {
 	// Replace `~` with the value of ${HOME}
-	return regexp.MustCompile("^~").ReplaceAllString(GLOBAL_CONFIG_DEFAULT_PATH, os.Getenv("HOME"))
+	return regexp.MustCompile("^~").ReplaceAllString(path, os.Getenv("HOME"))
 }
