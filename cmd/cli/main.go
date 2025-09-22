@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"regexp"
@@ -8,6 +9,7 @@ import (
 	"github.com/bjvanbemmel/go-templ/cmd/cli/commands"
 	"github.com/bjvanbemmel/go-templ/config"
 	"github.com/bjvanbemmel/go-templ/git"
+	"github.com/bjvanbemmel/go-templ/nix"
 )
 
 func main() {
@@ -38,7 +40,8 @@ func main() {
 		}
 	}
 
-	git := git.New(conf)
+	gitIntegration := git.New(conf)
+	nixIntegration := nix.New(conf)
 
 	switch args[0] {
 	case "config":
@@ -50,8 +53,28 @@ func main() {
 		}
 		return
 	case "fetch":
-		fetch := commands.NewFetch(git)
-		if err := fetch.Execute(); err != nil {
+		fetch := commands.NewFetch(gitIntegration)
+		if err := fetch.Execute(); errors.Is(err, git.ErrAlreadyUpToDate) {
+			fmt.Println("No new configurations found!")
+			return
+		} else if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+			return
+		}
+	case "deploy":
+		fetch := commands.NewFetch(gitIntegration)
+		if err := fetch.Execute(); errors.Is(err, git.ErrAlreadyUpToDate) {
+			fmt.Println("No new configurations found!")
+			return
+		} else if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+			return
+		}
+
+		deploy := commands.NewDeploy(nixIntegration)
+		if err := deploy.Execute(); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 			return

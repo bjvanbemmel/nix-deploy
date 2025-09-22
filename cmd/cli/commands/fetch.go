@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/bjvanbemmel/go-templ/git"
@@ -21,10 +20,6 @@ func (f Fetch) Execute(args ...string) error {
 	fmt.Println("Checking for new configurations...")
 
 	err := f.Git.Pull()
-	if errors.Is(err, git.ErrAlreadyUpToDate) {
-		fmt.Println("No new configurations found!")
-		return nil
-	}
 
 	if err != nil {
 		return err
